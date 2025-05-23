@@ -125,8 +125,8 @@ if st.button("실행하기"):
                 st.warning(f"{val} mg/dL – 고혈당 경고")
             else:
                 st.success(f"{val} mg/dL – 정상 범위입니다.")
-
-    elif option == "혈압 분석":
+                
+elif option == "혈압 분석":
         st.subheader("혈압 수치 직접 입력")
         sys = st.number_input("수축기(mmHg)", min_value=0, step=1)
         dia = st.number_input("이완기(mmHg)", min_value=0, step=1)
@@ -136,7 +136,7 @@ if st.button("실행하기"):
             elif sys < 90 or dia < 60:
                 st.warning(f"{sys}/{dia} mmHg – 저혈압 경고")
             else:
-                st.success(f"{sys}/{dia} mmHg – 정상 혈압")
+                st.success(f"{sys}/{dia} mmHg – 정상 혈압")   
 
     elif option == "체온 분석":
         st.subheader("체온 수치 직접 입력")
