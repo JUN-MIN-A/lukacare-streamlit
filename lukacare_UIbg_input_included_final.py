@@ -107,44 +107,52 @@ def ask_gpt(prompt):
     return response.choices[0].message.content.strip()
 
 if st.button("실행하기"):
-    if option == "혈당 분석":
-        val = st.number_input("혈당 (mg/dL)", min_value=0, step=1)
-        if val > 0:
-            st.session_state["glucose_log"].append(val)
-            if val < 70:
-                st.error(f"{val} mg/dL – 저혈당 위험")
-            elif val > 125:
-                st.warning(f"{val} mg/dL – 고혈당 경고")
-            else:
-                st.success(f"{val} mg/dL – 정상 범위")
-            st.line_chart(st.session_state["glucose_log"])
+    # 혈당 분석
+if option == "혈당 분석":
+    val = st.number_input("혈당 수치 입력 (mg/dL)", min_value=0, step=1)
+    if val > 0:
+        st.session_state["glucose_log"].append(val)
 
-    elif option == "혈압 분석":
-        sys = st.number_input("수축기(mmHg)", min_value=0, step=1)
-        dia = st.number_input("이완기(mmHg)", min_value=0, step=1)
-        if sys > 0 and dia > 0:
-            st.session_state["bp_log"].append((sys, dia))
-            if sys >= 140 or dia >= 90:
-                st.error(f"{sys}/{dia} mmHg – 고혈압 주의")
-            elif sys < 90 or dia < 60:
-                st.warning(f"{sys}/{dia} mmHg – 저혈압 경고")
-            else:
-                st.success(f"{sys}/{dia} mmHg – 정상 혈압")
-            bp_df = pd.DataFrame(st.session_state["bp_log"], columns=["수축기", "이완기"])
-            st.line_chart(bp_df)
+        if val < 70:
+            st.error(f"{val} mg/dL – 저혈당! 당분 섭취가 필요해요.")
+        elif val > 125:
+            st.warning(f"{val} mg/dL – 고혈당 경고! 식단 관리가 필요합니다.")
+        else:
+            st.success(f"{val} mg/dL – 정상 혈당입니다.")
 
-    elif option == "체온 분석":
-        temp = st.number_input("체온 (℃)", min_value=30.0, max_value=42.0, step=0.1)
-        if temp > 0:
-            st.session_state["temp_log"].append(temp)
-            if temp >= 37.5:
-                st.error(f"{temp}℃ – 발열 상태입니다.")
-            elif temp < 35.5:
-                st.warning(f"{temp}℃ – 저체온 주의")
-            else:
-                st.success(f"{temp}℃ – 정상 체온")
-            st.line_chart(st.session_state["temp_log"])
+        st.line_chart(st.session_state["glucose_log"])
 
+# 혈압 분석
+elif option == "혈압 분석":
+    sys = st.number_input("수축기 혈압 (mmHg)", min_value=0, step=1)
+    dia = st.number_input("이완기 혈압 (mmHg)", min_value=0, step=1)
+    if sys > 0 and dia > 0:
+        st.session_state["bp_log"].append((sys, dia))
+
+        if sys >= 140 or dia >= 90:
+            st.error(f"{sys}/{dia} mmHg – 고혈압 주의! 진료가 필요할 수 있어요.")
+        elif sys < 90 or dia < 60:
+            st.warning(f"{sys}/{dia} mmHg – 저혈압! 어지럼증 조심하세요.")
+        else:
+            st.success(f"{sys}/{dia} mmHg – 정상 혈압입니다.")
+
+        df = pd.DataFrame(st.session_state["bp_log"], columns=["수축기", "이완기"])
+        st.line_chart(df)
+
+# 체온 분석
+elif option == "체온 분석":
+    temp = st.number_input("체온 입력 (℃)", min_value=30.0, max_value=42.0, step=0.1)
+    if temp > 0:
+        st.session_state["temp_log"].append(temp)
+
+        if temp >= 37.5:
+            st.error(f"{temp}℃ – 발열 상태! 휴식과 수분을 충분히 섭취하세요.")
+        elif temp < 35.5:
+            st.warning(f"{temp}℃ – 저체온! 체온 유지에 주의가 필요합니다.")
+        else:
+            st.success(f"{temp}℃ – 정상 체온입니다.")
+
+        st.line_chart(st.session_state["temp_log"])
     elif option == "정서 관리":
         mood = st.radio("오늘 기분은?", ["좋음", "보통", "우울", "불안"])
         reason = st.text_input("이유는?")
