@@ -138,7 +138,7 @@ elif option == "혈압 분석":
             else:
                 st.success(f"{sys}/{dia} mmHg – 정상 혈압")   
 
-    elif option == "체온 분석":
+elif option == "체온 분석":
         st.subheader("체온 수치 직접 입력")
         temp = st.number_input("체온 (℃)", min_value=30.0, max_value=42.0, step=0.1)
         if temp > 0:
@@ -149,8 +149,7 @@ elif option == "혈압 분석":
             else:
                 st.success(f"{temp}℃ – 정상 체온")
 
-
-    elif option == "정서 관리":
+elif option == "정서 관리":
         st.subheader("감정 기록")
         mood = st.radio("오늘 기분?", ["좋음", "보통", "우울", "불안"])
         reason = st.text_input("이유는?")
