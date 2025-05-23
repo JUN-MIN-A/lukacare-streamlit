@@ -126,7 +126,7 @@ if st.button("실행하기"):
             else:
                 st.success(f"{val} mg/dL – 정상 범위입니다.")
                 
-elif option == "혈압 분석":
+ elif option == "혈압 분석":
         st.subheader("혈압 수치 직접 입력")
         sys = st.number_input("수축기(mmHg)", min_value=0, step=1)
         dia = st.number_input("이완기(mmHg)", min_value=0, step=1)
@@ -138,7 +138,7 @@ elif option == "혈압 분석":
             else:
                 st.success(f"{sys}/{dia} mmHg – 정상 혈압")   
 
-elif option == "체온 분석":
+ elif option == "체온 분석":
         st.subheader("체온 수치 직접 입력")
         temp = st.number_input("체온 (℃)", min_value=30.0, max_value=42.0, step=0.1)
         if temp > 0:
@@ -149,7 +149,7 @@ elif option == "체온 분석":
             else:
                 st.success(f"{temp}℃ – 정상 체온")
 
-elif option == "정서 관리":
+ elif option == "정서 관리":
         st.subheader("감정 기록")
         mood = st.radio("오늘 기분?", ["좋음", "보통", "우울", "불안"])
         reason = st.text_input("이유는?")
@@ -158,7 +158,7 @@ elif option == "정서 관리":
             emotion_log.append({"시간": timestamp, "기분": mood, "이유": reason})
             st.dataframe(pd.DataFrame(emotion_log))
 
-elif option == "사전 진료":
+ elif option == "사전 진료":
         st.subheader("GPT 진료")
         if not user_input:
             st.warning("질문을 입력하세요")
@@ -170,7 +170,7 @@ elif option == "사전 진료":
             else:
                 st.write(ask_gpt(user_input))
 
-elif option == "주변 의원 연락처":
+ elif option == "주변 의원 연락처":
         st.subheader("의원 안내")
         if not user_input:
             for dept, info in clinics.items():
@@ -183,7 +183,7 @@ elif option == "주변 의원 연락처":
             else:
                 st.write(ask_gpt(f"{user_input} 관련 병원"))
 
-elif option == "감정 기록 저장":
+ elif option == "감정 기록 저장":
         if emotion_log:
             df = pd.DataFrame(emotion_log)
             csv = df.to_csv(index=False).encode("utf-8-sig")
@@ -191,7 +191,7 @@ elif option == "감정 기록 저장":
         else:
             st.warning("저장할 감정기록이 없습니다.")
 
-elif option == "데일리 리포트":
+ elif option == "데일리 리포트":
         st.subheader("AI 건강 리포트")
         summary = (
             f"- 혈당: {glucose[-1]} mg/dL\n"
