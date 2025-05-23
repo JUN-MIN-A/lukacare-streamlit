@@ -21,7 +21,7 @@ if "chat_history" not in st.session_state:
 st.markdown("""
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/JUN-MIN-A/lukacare-streamlit/main/lukacare_bg_transparent.jpg");
+        background-image: url("https://raw.githubusercontent.com/JUN-MIN-A/lukacare-streamlit/main/lukacare_bg_final_50.jpg");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
