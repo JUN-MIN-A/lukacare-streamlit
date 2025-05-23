@@ -158,7 +158,7 @@ elif option == "정서 관리":
             emotion_log.append({"시간": timestamp, "기분": mood, "이유": reason})
             st.dataframe(pd.DataFrame(emotion_log))
 
-    elif option == "사전 진료":
+elif option == "사전 진료":
         st.subheader("GPT 진료")
         if not user_input:
             st.warning("질문을 입력하세요")
@@ -170,7 +170,7 @@ elif option == "정서 관리":
             else:
                 st.write(ask_gpt(user_input))
 
-    elif option == "주변 의원 연락처":
+elif option == "주변 의원 연락처":
         st.subheader("의원 안내")
         if not user_input:
             for dept, info in clinics.items():
@@ -183,7 +183,7 @@ elif option == "정서 관리":
             else:
                 st.write(ask_gpt(f"{user_input} 관련 병원"))
 
-    elif option == "감정 기록 저장":
+elif option == "감정 기록 저장":
         if emotion_log:
             df = pd.DataFrame(emotion_log)
             csv = df.to_csv(index=False).encode("utf-8-sig")
@@ -191,7 +191,7 @@ elif option == "정서 관리":
         else:
             st.warning("저장할 감정기록이 없습니다.")
 
-    elif option == "데일리 리포트":
+elif option == "데일리 리포트":
         st.subheader("AI 건강 리포트")
         summary = (
             f"- 혈당: {glucose[-1]} mg/dL\n"
