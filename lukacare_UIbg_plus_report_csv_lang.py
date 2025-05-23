@@ -115,35 +115,40 @@ user_input = st.text_input("질문/증상/의원 검색어")
 
 # 실행
 if st.button("실행하기"):
-    if option == "혈당 분석":
-        st.subheader("혈당 분석")
-        st.line_chart(glucose)
-        val = glucose[-1]
-        if val < 70:
-            st.error(f"{val} mg/dL – 저혈당 위험")
-        elif val > 125:
-            st.warning(f"{val} mg/dL – 고혈당 경고")
-        else:
-            st.success(f"{val} mg/dL – 정상 범위")
+ if option == "혈당 분석":
+        st.subheader("혈당 수치 직접 입력")
+        val = st.number_input("혈당 (mg/dL)", min_value=0, step=1)
+        if val > 0:
+            if val < 70:
+                st.error(f"{val} mg/dL – 저혈당 위험")
+            elif val > 125:
+                st.warning(f"{val} mg/dL – 고혈당 경고")
+            else:
+                st.success(f"{val} mg/dL – 정상 범위입니다.")
 
     elif option == "혈압 분석":
-        st.subheader("혈압 분석")
-        st.dataframe(bp_data)
-        sys = bp_data.iloc[-1]["수축기(mmHg)"]
-        dia = bp_data.iloc[-1]["이완기(mmHg)"]
-        if sys > 140 or dia > 90:
-            st.error(f"{sys}/{dia} mmHg – 고혈압 주의")
-        else:
-            st.success(f"{sys}/{dia} mmHg – 정상 혈압")
+        st.subheader("혈압 수치 직접 입력")
+        sys = st.number_input("수축기(mmHg)", min_value=0, step=1)
+        dia = st.number_input("이완기(mmHg)", min_value=0, step=1)
+        if sys > 0 and dia > 0:
+            if sys >= 140 or dia >= 90:
+                st.error(f"{sys}/{dia} mmHg – 고혈압 주의")
+            elif sys < 90 or dia < 60:
+                st.warning(f"{sys}/{dia} mmHg – 저혈압 경고")
+            else:
+                st.success(f"{sys}/{dia} mmHg – 정상 혈압")
 
     elif option == "체온 분석":
-        st.subheader("체온 분석")
-        st.line_chart(temperature)
-        temp = temperature[-1]
-        if temp >= 37.5:
-            st.error(f"{temp}℃ – 발열")
-        else:
-            st.success(f"{temp}℃ – 정상 체온")
+        st.subheader("체온 수치 직접 입력")
+        temp = st.number_input("체온 (℃)", min_value=30.0, max_value=42.0, step=0.1)
+        if temp > 0:
+            if temp >= 37.5:
+                st.error(f"{temp}℃ – 발열 상태입니다.")
+            elif temp < 35.5:
+                st.warning(f"{temp}℃ – 저체온 주의")
+            else:
+                st.success(f"{temp}℃ – 정상 체온")
+
 
     elif option == "정서 관리":
         st.subheader("감정 기록")
