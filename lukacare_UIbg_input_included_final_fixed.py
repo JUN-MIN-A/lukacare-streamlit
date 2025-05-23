@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 import openai
 
-openai.api_key = "sk-여기에_API_키_입력"
+openai.api_key = "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"
 
 st.set_page_config(page_title="루카케어 Mini", page_icon="❤️", layout="centered")
 
