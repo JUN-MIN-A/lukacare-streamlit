@@ -69,10 +69,6 @@ for key in ["glucose_log", "bp_log", "temp_log", "emotion_log"]:
     if key not in st.session_state:
         st.session_state[key] = []
 
-st.image("https://cdn-icons-png.flaticon.com/512/4712/4712103.png", width=80)
-st.title("루카케어 Mini")
-st.markdown("AI 기반 건강 수치 분석 + 정서 기록 + 상담")
-
 option = st.radio("기능을 선택하세요", [
     "혈당 분석", "혈압 분석", "체온 분석", "정서 관리",
     "사전 진료", "주변 의원 연락처", "감정 기록 저장", "데일리 리포트"
