@@ -1,0 +1,155 @@
+
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
+import openai
+
+openai.api_key = "sk-여기에_API_키_입력"
+
+st.set_page_config(page_title="루카케어 Mini", page_icon="❤️", layout="centered")
+
+# 상태 초기화
+for key in ["glucose_log", "bp_log", "temp_log", "emotion_log"]:
+    if key not in st.session_state:
+        st.session_state[key] = []
+
+st.image("https://cdn-icons-png.flaticon.com/512/4712/4712103.png", width=80)
+st.title("루카케어 Mini")
+st.markdown("AI 기반 건강 수치 분석 + 정서 기록 + 상담")
+
+option = st.radio("기능을 선택하세요", [
+    "혈당 분석", "혈압 분석", "체온 분석", "정서 관리",
+    "사전 진료", "주변 의원 연락처", "감정 기록 저장", "데일리 리포트"
+])
+user_input = st.text_input("질문/증상/검색어 입력")
+
+clinics = {
+    "내과": "서울 내과의원 02-1111-1111",
+    "이비인후과": "숨편한 이비인후과 02-2222-2222",
+    "외과": "튼튼 외과의원 02-3333-3333",
+    "안과": "밝은눈 안과 02-4444-4444",
+    "피부과": "더마인 피부과 02-5555-5555",
+    "성형외과": "아름 성형외과 02-6666-6666",
+    "정신과": "마음편한 정신과 02-7777-7777",
+    "산부인과": "미래 산부인과 02-8888-8888",
+    "소아과": "행복한 소아과 02-9999-9999",
+    "치과": "스마일 치과 02-1010-1010",
+    "정형외과": "튼튼정형외과 02-1414-1414",
+    "대학병원": "서울대학교병원 02-880-5114",
+    "종합병원": "삼성서울병원 02-3410-0200",
+    "보건소": "강남구보건소 02-3423-7200"
+}
+
+preset_responses = {
+    "두통": "휴식 부족이나 스트레스로 인한 일시적 두통일 수 있어요.",
+    "불면": "수면 위생을 지켜보세요.",
+    "우울감": "산책, 햇빛 쬐기, 대화가 도움이 됩니다."
+}
+
+def ask_gpt(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7
+    )
+    return response.choices[0].message.content.strip()
+
+if st.button("실행하기"):
+    if option == "혈당 분석":
+        val = st.number_input("혈당 (mg/dL)", min_value=0, step=1)
+        if val > 0:
+            st.session_state["glucose_log"].append(val)
+            if val < 70:
+                st.error(f"{val} mg/dL – 저혈당 위험")
+            elif val > 125:
+                st.warning(f"{val} mg/dL – 고혈당 경고")
+            else:
+                st.success(f"{val} mg/dL – 정상 범위")
+            st.line_chart(st.session_state["glucose_log"])
+
+    elif option == "혈압 분석":
+        sys = st.number_input("수축기(mmHg)", min_value=0, step=1)
+        dia = st.number_input("이완기(mmHg)", min_value=0, step=1)
+        if sys > 0 and dia > 0:
+            st.session_state["bp_log"].append((sys, dia))
+            if sys >= 140 or dia >= 90:
+                st.error(f"{sys}/{dia} mmHg – 고혈압 주의")
+            elif sys < 90 or dia < 60:
+                st.warning(f"{sys}/{dia} mmHg – 저혈압 경고")
+            else:
+                st.success(f"{sys}/{dia} mmHg – 정상 혈압")
+            bp_df = pd.DataFrame(st.session_state["bp_log"], columns=["수축기", "이완기"])
+            st.line_chart(bp_df)
+
+    elif option == "체온 분석":
+        temp = st.number_input("체온 (℃)", min_value=30.0, max_value=42.0, step=0.1)
+        if temp > 0:
+            st.session_state["temp_log"].append(temp)
+            if temp >= 37.5:
+                st.error(f"{temp}℃ – 발열 상태입니다.")
+            elif temp < 35.5:
+                st.warning(f"{temp}℃ – 저체온 주의")
+            else:
+                st.success(f"{temp}℃ – 정상 체온")
+            st.line_chart(st.session_state["temp_log"])
+
+    elif option == "정서 관리":
+        mood = st.radio("오늘 기분은?", ["좋음", "보통", "우울", "불안"])
+        reason = st.text_input("이유는?")
+        if reason:
+            time = datetime.now().strftime("%Y-%m-%d %H:%M")
+            st.session_state["emotion_log"].append({"시간": time, "기분": mood, "이유": reason})
+            st.dataframe(pd.DataFrame(st.session_state["emotion_log"]))
+
+    elif option == "사전 진료":
+        if not user_input:
+            st.warning("질문을 입력하세요")
+        else:
+            for key in preset_responses:
+                if key in user_input:
+                    st.success(preset_responses[key])
+                    break
+            else:
+                st.write(ask_gpt(user_input))
+
+    elif option == "주변 의원 연락처":
+        if not user_input:
+            for dept, contact in clinics.items():
+                st.markdown(f"- **{dept}**: {contact}")
+        else:
+            match = [v for k, v in clinics.items() if k in user_input]
+            if match:
+                for i in match:
+                    st.success(i)
+            else:
+                st.write(ask_gpt(f"{user_input} 관련 병원을 추천해줘."))
+
+    elif option == "감정 기록 저장":
+        if st.session_state["emotion_log"]:
+            df = pd.DataFrame(st.session_state["emotion_log"])
+            csv = df.to_csv(index=False).encode("utf-8-sig")
+            st.download_button("감정기록 CSV 다운로드", csv, file_name="emotion_log.csv", mime="text/csv")
+        else:
+            st.warning("기록된 감정이 없습니다.")
+
+    elif option == "데일리 리포트":
+        report = ""
+        if st.session_state["glucose_log"]:
+            report += f"- 혈당: {st.session_state['glucose_log'][-1]} mg/dL\n"
+        else:
+            report += "- 혈당: 없음\n"
+        if st.session_state["bp_log"]:
+            bp = st.session_state["bp_log"][-1]
+            report += f"- 혈압: {bp[0]}/{bp[1]} mmHg\n"
+        else:
+            report += "- 혈압: 없음\n"
+        if st.session_state["temp_log"]:
+            report += f"- 체온: {st.session_state['temp_log'][-1]} ℃\n"
+        else:
+            report += "- 체온: 없음\n"
+        if st.session_state["emotion_log"]:
+            report += f"- 감정: {st.session_state['emotion_log'][-1]['기분']}"
+        else:
+            report += "- 감정: 기록 없음"
+        st.code(report)
