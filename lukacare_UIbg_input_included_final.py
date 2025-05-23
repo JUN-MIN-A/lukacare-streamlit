@@ -9,6 +9,61 @@ openai.api_key = "sk-여기에_API_키_입력"
 
 st.set_page_config(page_title="루카케어 Mini", page_icon="❤️", layout="centered")
 
+# UI 스타일
+st.markdown("""
+<style>
+.stApp {
+    background-image: url("https://raw.githubusercontent.com/JUN-MIN-A/lukacare-streamlit/main/lukacare_bg_final_50.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.main-box {
+    background-color: rgba(255,255,255,0.9);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    color: #333333;
+}
+.stButton>button {
+    background-color: #F7CAC9;
+    color: #4B3F33;
+    border-radius: 10px;
+    font-weight: bold;
+    height: 3em;
+    width: 100%;
+}
+h1, h3, h4 {
+    color: #B45F5F;
+    text-align: center;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# 앱 헤더
+st.image("https://cdn-icons-png.flaticon.com/512/4712/4712103.png", width=80)
+st.markdown("<h1>루카케어 Mini</h1>", unsafe_allow_html=True)
+st.markdown("<h4>AI 기반 건강 관리 에이전트 – GPT 연동 & CSV 기록</h4>", unsafe_allow_html=True)
+
+# 소개 박스
+with st.container():
+    st.markdown("""
+    <div class='main-box'>
+    <h3>앱 소개 및 기능 안내</h3>
+    <p style='font-size:15px;'>
+    루카케어 Mini는 감성 기반 AI 건강 에이전트입니다.<br>
+    - 건강 분석 + 정서관리 + GPT 상담 지원<br>
+    - 감정 기록 저장, 다국어 전환, 데일리 리포트 포함
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# 다국어 안내
+if st.checkbox("영문 모드 (English Mode)", False):
+    st.info("영문 UI는 준비 중입니다. 질문을 영어로 입력하면 GPT가 응답할 수 있습니다.")
+
+
 # 상태 초기화
 for key in ["glucose_log", "bp_log", "temp_log", "emotion_log"]:
     if key not in st.session_state:
