@@ -13,7 +13,7 @@ st.set_page_config(page_title="루카케어 Mini", page_icon="❤️", layout="c
 st.markdown("""
 <style>
 .stApp {
-    background-image: url("https://raw.githubusercontent.com/minahjeon/lukacare-streamlit/main/lukacare_bg_final_50.png");
+    background-image: url("https://raw.githubusercontent.com/JUN-MIN-A/lukacare-streamlit/main/lukacare_bg_final_50.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
