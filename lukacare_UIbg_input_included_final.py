@@ -167,7 +167,7 @@ elif option == "체온 분석":
         else:
             for key in preset_responses:
                 if key in user_input:
-                    st.success(preset_responses[key])
+                    st.success(preset_responses[sk-proj-XrbBARDJ-CFwui5bDuc4J6YhbbW0QY3ZMLyd5vm325pXfLif2fw-qs9E])
                     break
             else:
                 st.write(ask_gpt(user_input))
