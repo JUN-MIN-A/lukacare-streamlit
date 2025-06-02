@@ -81,7 +81,7 @@ clinics = {
     "종합병원": "삼성서울병원", "보건소": "강남구보건소"
 }
 
-preset_responses = 
+preset_responses = {
 
 # CSV 파일 로드
 df = pd.read_excel("루카케어_증상목록_진료과태그.csv", engine="openpyx1")
@@ -91,7 +91,7 @@ preset_responses = dict(zip(df["증상"], df["응답"]))
 
 # 증상 ➝ 진료과 추천 딕셔너리
 clinic_recommend = dict(zip(df["증상"], df["진료과"]))
-
+}
 def ask_gpt(prompt):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
