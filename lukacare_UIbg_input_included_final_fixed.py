@@ -86,7 +86,6 @@ preset_responses = {
     "불면": "수면위생을 점검하세요.",
     "우울감": "햇볕, 산책, 대화가 도움이 됩니다."
 }
-import pandas as pd
 
 # CSV 파일 로드
 df = pd.read_excel("루카케어_증상목록_진료과태그.csv", engine="openpyx1")
