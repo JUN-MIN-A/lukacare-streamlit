@@ -1,6 +1,7 @@
 
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 from datetime import datetime
 from openai import OpenAI
 client = OpenAI(api_key="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")
