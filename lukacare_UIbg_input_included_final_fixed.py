@@ -87,9 +87,6 @@ df = pd.read_csv("루카케어_증상목록_진료과태그-1.csv", encoding="ut
 
 # 증상 ➝ 즉각 반응 딕셔너리
 preset_responses = dict(zip(df["증상"], df["응답"]))
-
-# 증상 ➝ 진료과 추천 딕셔너리
-clinic_recommend = dict(zip(df["증상"], df["진료과"]))
 }
 def ask_gpt(prompt):
     response = client.chat.completions.create(
