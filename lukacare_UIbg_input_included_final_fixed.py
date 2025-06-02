@@ -83,7 +83,7 @@ clinics = {
 
 preset_responses = {
 # CSV 파일 로드
-def = pd.read_csv("루카케어_증상목록_진료과태그.csv", encoding="utf-8-sig")
+df = pd.read_csv("루카케어_증상목록_진료과태그-1.csv", encoding="utf-8-sig")
 
 # 증상 ➝ 즉각 반응 딕셔너리
 preset_responses = dict(zip(df["증상"], df["응답"]))
