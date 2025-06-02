@@ -81,7 +81,6 @@ clinics = {
     "종합병원": "삼성서울병원", "보건소": "강남구보건소"
 }
 
-preset_responses = {
 # CSV 파일 로드
 df = pd.read_csv("루카케어_증상목록_진료과태그-1.csv", encoding="utf-8-sig")
 
