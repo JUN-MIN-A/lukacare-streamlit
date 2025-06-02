@@ -82,7 +82,6 @@ clinics = {
 }
 
 preset_responses = {
-import pandas as pd
 # CSV 파일 로드
 df = pd.read_csv("루카케어_증상목록_진료과태그.csv", encoding="utf-8-sig")
 
